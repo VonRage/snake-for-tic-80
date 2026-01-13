@@ -6,23 +6,93 @@
 -- version: 0.1
 -- script:  lua
 
-t=0
-x=96
-y=24
+-- globals
+DBLUE = 8
+BLUE = 9
+LBLUE = 10
+CYAN = 11
+
+CELL_SIZE = 8
+GRID_SIZE = 16
+BORDER = CELL_SIZE / 2
+
+TIME = 8
+t = TIME
+x = 96
+y = 24
+x_dir = 0
+y_dir = 0
+dir_new = 0
+
+snake_head = {
+	x_pos = 0,
+	y_pos = 0
+}
 
 function TIC()
+	INPUTS()
+	UPDATES()
+	DRAW()
+end -- TIC
 
-	if btn(0) then y=y-1 end
-	if btn(1) then y=y+1 end
-	if btn(2) then x=x-1 end
-	if btn(3) then x=x+1 end
+function INPUTS()
+	if btn(0) then dir_new = 0 end -- up
+	if btn(3) then dir_new = 1 end -- right
+	if btn(1) then dir_new = 2 end -- down
+	if btn(2) then dir_new = 3 end -- left
+end -- INPUTS
 
-	cls(13)
-	spr(1+t%60//30*2,x,y,14,3,0,0,2,2)
-	print("HELLO WORLD!",84,84)
-	t=t+1
-end
+function UPDATES()
+	t = t - 1
+	
+	if t == 0 then
+		move()
+		t = TIME
+	end
+end -- UPDATES
 
+function DRAW()
+	cls(DBLUE)
+	
+	for _x = BORDER, CELL_SIZE * GRID_SIZE, CELL_SIZE do
+		for _y = BORDER, CELL_SIZE * GRID_SIZE, CELL_SIZE do
+			rectb(_x,
+								_y,
+								CELL_SIZE - 1,
+								CELL_SIZE - 1,
+								LBLUE)
+		end
+	end
+	
+	rect(grid(snake_head.x_pos) - (x_dir * t),
+						grid(snake_head.y_pos) - (y_dir * t),
+						4,
+						4,
+						CYAN)
+end -- DRAW
+
+function move()
+	x_dir = 0
+	y_dir = 0
+			
+	if dir_new == 0 then
+		y_dir = -1
+	elseif dir_new == 1 then
+		x_dir = 1
+	elseif dir_new == 2 then
+		y_dir = 1
+	elseif dir_new == 3 then
+		x_dir = -1
+	end
+	
+	snake_head.x_pos = snake_head.x_pos + x_dir
+	snake_head.y_pos = snake_head.y_pos + y_dir
+end -- move
+
+-- returns the top left corner of grid position
+function grid(val)
+	return BORDER + (val * CELL_SIZE)
+end -- grid
 -- <TILES>
 -- 001:eccccccccc888888caaaaaaaca888888cacccccccacc0ccccacc0ccccacc0ccc
 -- 002:ccccceee8888cceeaaaa0cee888a0ceeccca0ccc0cca0c0c0cca0c0c0cca0c0c
