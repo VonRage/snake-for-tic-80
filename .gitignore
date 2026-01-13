@@ -1,0 +1,20 @@
+# --- TIC-80 Files ---
+# Ignore the binary cartridge files (since you use .lua for source)
+*.tic
+
+# --- Editor Specifics ---
+# ZeroBrane Studio project metadata
+.lua/
+*.lproj/
+
+# VS Code settings and workspace data
+.vscode/
+
+# --- OS / System Files ---
+.DS_Store
+Thumbs.db
+
+# --- Optional: Build/Export Artifacts ---
+# If you export to HTML or JS for the web, ignore the output folder
+/build/
+/exports/
