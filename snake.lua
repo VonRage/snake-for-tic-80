@@ -26,7 +26,8 @@ dir_new = 0
 
 snake_head = {
 	x_pos = 0,
-	y_pos = 0
+	y_pos = 0,
+	dir = 0
 }
 
 function TIC()
@@ -60,20 +61,32 @@ function DRAW()
 								_y,
 								CELL_SIZE - 1,
 								CELL_SIZE - 1,
-								LBLUE)
+								BLUE)
 		end
 	end
-	
+
+	--[[ old snake head	
 	rect(grid(snake_head.x_pos) - (x_dir * t),
 						grid(snake_head.y_pos) - (y_dir * t),
 						4,
 						4,
 						CYAN)
+	--]]
+	
+	snakehead = {
+		x = grid(snake_head.x_pos) - (x_dir * t),
+		y = grid(snake_head.y_pos) - (y_dir * t)
+	}
+	spr(272 + snake_head.dir,
+					snakehead.x,
+					snakehead.y,
+					0)
 end -- DRAW
 
 function move()
 	x_dir = 0
 	y_dir = 0
+	snake_head.dir = dir_new
 			
 	if dir_new == 0 then
 		y_dir = -1
@@ -93,16 +106,12 @@ end -- move
 function grid(val)
 	return BORDER + (val * CELL_SIZE)
 end -- grid
--- <TILES>
--- 001:eccccccccc888888caaaaaaaca888888cacccccccacc0ccccacc0ccccacc0ccc
--- 002:ccccceee8888cceeaaaa0cee888a0ceeccca0ccc0cca0c0c0cca0c0c0cca0c0c
--- 003:eccccccccc888888caaaaaaaca888888cacccccccacccccccacc0ccccacc0ccc
--- 004:ccccceee8888cceeaaaa0cee888a0ceeccca0cccccca0c0c0cca0c0c0cca0c0c
--- 017:cacccccccaaaaaaacaaacaaacaaaaccccaaaaaaac8888888cc000cccecccccec
--- 018:ccca00ccaaaa0ccecaaa0ceeaaaa0ceeaaaa0cee8888ccee000cceeecccceeee
--- 019:cacccccccaaaaaaacaaacaaacaaaaccccaaaaaaac8888888cc000cccecccccec
--- 020:ccca00ccaaaa0ccecaaa0ceeaaaa0ceeaaaa0cee8888ccee000cceeecccceeee
--- </TILES>
+-- <SPRITES>
+-- 016:0002000000aaa00000aaa0000adada000daaad000aaaaa000aaaaa0000000000
+-- 017:000000000aada0000aaadaa00aaaaaa20aaadaa00aada0000000000000000000
+-- 018:000000000aaaaa000aaaaa000daaad000adada0000aaa00000aaa00000020000
+-- 019:00000000000adaa00aadaaa02aaaaaa00aadaaa0000adaa00000000000000000
+-- </SPRITES>
 
 -- <WAVES>
 -- 000:00000000ffffffff00000000ffffffff
